@@ -19,16 +19,37 @@ class UserScreenController: UIViewController {
     
     lazy var slideInTransitioningDelegate = SlideInPresentationDelegate()
     
-    @IBOutlet weak var tblUser: UITableView!
+    @IBOutlet weak var tblUser1: UITableView!
+    @IBOutlet weak var tblUser2: UITableView!
+    @IBOutlet weak var tblUser3: UITableView!
+    
+    @IBOutlet weak var cstHeightOfTblUser1: NSLayoutConstraint!
+    @IBOutlet weak var cstHeightOfTblUser2: NSLayoutConstraint!
+    @IBOutlet weak var cstHeightOfTblUser3: NSLayoutConstraint!
+    
+    @IBAction func btnAdd(_ sender: UIButton) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "Modal") as! AddNewUserController
+        slideInTransitioningDelegate.direction = .top
+        slideInTransitioningDelegate.disableCompactHeight = true
+        controller.transitioningDelegate = slideInTransitioningDelegate
+        controller.addNewUserDelegate = self
+        controller.modalPresentationStyle = .custom
+        present(controller, animated: true, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let customCell = UINib(nibName: "CustomCellUser", bundle: nil)
-//        tblUser.register(customCell, forCellReuseIdentifier: "Cell")
-        tblUser.dataSource = self
-        tblUser.delegate = self
-        self.tblUser.layer.cornerRadius = 5.0
-        self.tblUser.clipsToBounds = true
+        
+        tblUser1.dataSource = self
+        tblUser1.delegate = self
+        tblUser2.dataSource = self
+        tblUser2.delegate = self
+        tblUser3.dataSource = self
+        tblUser3.delegate = self
+        self.tblUser1.layer.cornerRadius = 5.0
+        self.tblUser2.layer.cornerRadius = 10
+        self.tblUser3.layer.cornerRadius = 10
+//        self.tblUser.clipsToBounds = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,196 +71,85 @@ class UserScreenController: UIViewController {
 
 extension UserScreenController: UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-            case 0:
-                return 1
+        var num: Int = 0
+        if tableView == tblUser1 {
+            num = 1
+            self.cstHeightOfTblUser1.constant = CGFloat(95)
             
-            case 1:
-                return menu.count
+        } else if tableView == tblUser2 {
+            num = menu.count
+            self.cstHeightOfTblUser2.constant = CGFloat(num * 44)
             
-            case 2:
-                return userManager.count
-            default:
-                return 0
+        } else if (tableView == tblUser3) {
+            num = userManager.count
+            self.cstHeightOfTblUser3.constant = CGFloat(num * 58)
+            
         }
+        return num
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 0) {
-            return 95
-        } else if (indexPath.section == 1) {
-            return 44
-        } else {
-            return 58
+        var height: CGFloat = 0
+        if (tableView == tblUser1) {
+            height = 95
+        } else if (tableView == tblUser2) {
+            height = 44
+        } else if (tableView == tblUser3) {
+            height = 58
         }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if (section == 0 || section == 1) {
-            let  headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")
-            headerCell?.backgroundColor = UIColor.clear
-            
-            return headerCell
-        } else {
-            let header = Bundle.main.loadNibNamed("HeaderUser", owner: self, options: nil)?.first as! HeaderUser
-            header.userManager.text = "User Manager"
-            
-            if header.addButtonDelegate == nil {
-                header.addButtonDelegate = self
-            }
-            return header
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section == 0 || section == 1) {
-            return 25
-        } else {
-            return 60
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (cell.responds(to: #selector(getter: UIView.tintColor))) {
-            if (tableView == self.tblUser) {
-                let cornerRadius: CGFloat = 10
-                cell.backgroundColor = UIColor.clear
-                let layer: CAShapeLayer  = CAShapeLayer()
-                let pathRef: CGMutablePath  = CGMutablePath()
-                let bounds: CGRect  = cell.bounds.insetBy(dx: 0, dy: 0) //dx: 25
-                var addLine: Bool = false
-                if (indexPath.row == 0 && indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1) {
-                    pathRef.__addRoundedRect(transform: nil, rect: bounds, cornerWidth: cornerRadius, cornerHeight: cornerRadius)
-                } else if (indexPath.row == 0) {
-                    pathRef.move(to: CGPoint(x:bounds.minX,y:bounds.maxY))
-                
-                    pathRef.addArc(tangent1End: CGPoint(x:bounds.minX,y:bounds.minY), tangent2End: CGPoint(x:bounds.midX,y:bounds.minY), radius: cornerRadius)
-                    
-                    pathRef.addArc(tangent1End: CGPoint(x:bounds.maxX,y:bounds.minY), tangent2End: CGPoint(x:bounds.maxX,y:bounds.midY), radius: cornerRadius)
-                    
-                    pathRef.addLine(to: CGPoint(x:bounds.maxX,y:bounds.maxY))
-                    addLine = true;
-                    
-                } else if (indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1) {
-                    
-                    pathRef.move(to: CGPoint(x:bounds.minX,y:bounds.minY))
-                    pathRef.addArc(tangent1End: CGPoint(x:bounds.minX,y:bounds.maxY), tangent2End: CGPoint(x:bounds.midX,y:bounds.maxY), radius: cornerRadius)
-                    
-                    pathRef.addArc(tangent1End: CGPoint(x:bounds.maxX,y:bounds.maxY), tangent2End: CGPoint(x:bounds.maxX,y:bounds.midY), radius: cornerRadius)
-                    pathRef.addLine(to: CGPoint(x:bounds.maxX,y:bounds.minY))
-                    
-                } else {
-                    pathRef.addRect(bounds)
-                    addLine = true
-                }
-                layer.path = pathRef
-                //CFRelease(pathRef)
-                //set the border color
-                //layer.strokeColor = UIColor.green.cgColor;
-                //set the border width
-                //layer.lineWidth = 5
-                if (indexPath.section == 0) {
-                    layer.fillColor = UIColor.clear.cgColor
-                } else {
-                    layer.fillColor = UIColor(white: 1, alpha: 1).cgColor
-                }
-            
-                if (addLine == true) {
-                    let lineLayer: CALayer = CALayer()
-                    let lineHeight: CGFloat  = (1.0 / UIScreen.main.scale)
-                    lineLayer.frame = CGRect(x:bounds.minX + 30, y:bounds.size.height-lineHeight, width:bounds.size.width - 30, height:lineHeight)
-                    lineLayer.backgroundColor = tableView.separatorColor!.cgColor
-                    layer.addSublayer(lineLayer)
-                }
-                
-                let testView: UIView = UIView(frame:bounds)
-                testView.layer.insertSublayer(layer, at: 0)
-                testView.backgroundColor = UIColor.clear
-                testView.clipsToBounds = true
-                
-//                if (indexPath.section == 0) {
-//                    cell.separatorInset = UIEdgeInsetsMake(0, 10000, 0, 0)
-//                }
-                cell.backgroundView = testView
-            }
-        }
+        return height
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        switch (indexPath.section) {
-            case 0:
-                let cellUser = Bundle.main.loadNibNamed("CustomCellUser", owner: self, options: nil)?.first as! CustomCellUser
-                cellUser.lbCurrentUser.text = "Current User"
-                cellUser.lbUserName.text = "Admin01"
-                cellUser.lbPermission.text = "Admin"
-//                cellUser.separatorInset = UIEdgeInsetsMake(0.0, 1000.0, 0.0, 0.0)
-                cellUser.separatorInset = UIEdgeInsets.zero
+        if tableView == tblUser1 {
+            let cellUser = Bundle.main.loadNibNamed("CustomCellUser", owner: self, options: nil)?.first as! CustomCellUser
+            cellUser.lbCurrentUser.text = "Current User"
+            cellUser.lbUserName.text = "Admin01"
+            cellUser.lbPermission.text = "Admin"
+            cellUser.separatorInset = UIEdgeInsets.zero
 
-                if cellUser.avatarImageDelegate == nil {
-                    cellUser.avatarImageDelegate = self
-                }
+            if cellUser.avatarImageDelegate == nil {
+                cellUser.avatarImageDelegate = self
+            }
                 
-                if (imageAvatar != nil) {
-                    cellUser.imgAvatar.image = imageAvatar
-                }
-                
-                return cellUser
+            if (imageAvatar != nil) {
+                cellUser.imgAvatar.image = imageAvatar
+            }
+            return cellUser
             
-            case 1:
-                let cell = Bundle.main.loadNibNamed("CustomCellUser2", owner: self, options: nil)?.first as! CustomCellUser2
-                cell.accessoryType = .disclosureIndicator
-                
-                cell.userMenu.text = menu[indexPath.row]
-//                cell.contentView.layer.cornerRadius = 10.0
-//                cell.contentView.layer.borderColor = UIColor.black.cgColor
-//                cell.contentView.layer.borderWidth = 3.0
+        } else if tableView == tblUser2 {
+            let cell = Bundle.main.loadNibNamed("CustomCellUser2", owner: self, options: nil)?.first as! CustomCellUser2
+            cell.accessoryType = .disclosureIndicator
+            
+            cell.userMenu.text = menu[indexPath.row]
             return cell
             
-            case 2:
-                let cell = Bundle.main.loadNibNamed("CustomCellUserManager", owner: self, options: nil)?.first as! CustomCellUserManager
-                cell.accessoryType = .disclosureIndicator
-                
-                let user = userManager[indexPath.row]
-                let name = user.value(forKeyPath: "name") as? String
-                
-                let firstText = name?.characters.first // lay ky tu dau tien
-                
-                cell.imgUser.text = String(describing: firstText!)
-                
-                cell.lbName.text = name
-                cell.lbPermission.text = "Permissions: User"
+        } else {
+            let cell = Bundle.main.loadNibNamed("CustomCellUserManager", owner: self, options: nil)?.first as! CustomCellUserManager
+            cell.accessoryType = .disclosureIndicator
             
+            let user = userManager[indexPath.row]
+            let name = user.value(forKeyPath: "name") as? String
+            
+            let firstText = name?.characters.first // lay ky tu dau tien
+            
+            cell.imgUser.text = String(describing: firstText!)
+            
+            cell.lbName.text = name
+            cell.lbPermission.text = "Permissions: User"
+            
+//            let bgColorView = UIView()
+//            bgColorView.backgroundColor = UIColor(red: 200/255, green: 203/255, blue: 207/255, alpha: 1)
+//            cell.selectedBackgroundView = bgColorView
             return cell
-            
-            default:
-                let cell = Bundle.main.loadNibNamed("CustomCellUser2", owner: self, options: nil)?.first as! CustomCellUser2
-                cell.userMenu.text = "other"
-                return cell
         }
     }
 }
 
 // add user
-extension UserScreenController: UITableViewDelegate, AddDelegate, AddNewUserDelegate {
-
-    func addPress() {
-
-        let controller = storyboard?.instantiateViewController(withIdentifier: "Modal") as! AddNewUserController
-//        let controller = ModalViewController(nibName: "ModalViewController", bundle: nil)
-        
-        slideInTransitioningDelegate.direction = .top
-        slideInTransitioningDelegate.disableCompactHeight = true
-        controller.transitioningDelegate = slideInTransitioningDelegate
-        controller.addNewUserDelegate = self
-        controller.modalPresentationStyle = .custom
-        present(controller, animated: true, completion: nil)
-    }
+extension UserScreenController: UITableViewDelegate, AddNewUserDelegate {
     
     func addNewUser(user: String, pass: String, rePass: String) {
         if (user.isEmpty || pass.isEmpty || rePass.isEmpty) {
@@ -247,7 +157,7 @@ extension UserScreenController: UITableViewDelegate, AddDelegate, AddNewUserDele
         } else if (pass.caseInsensitiveCompare(rePass) == .orderedSame) {
             
             saveUser(name: user)
-            tblUser.reloadData()
+            tblUser3.reloadData()
             dismiss(animated: true, completion: nil)
             showMessage(content: "Tạo tài khoản thành công!", theme: .success, duration: 1.0)
         } else {
@@ -288,6 +198,10 @@ extension UserScreenController: UITableViewDelegate, AddDelegate, AddNewUserDele
         
         SwiftMessages.show(config: messageConfig, view: message)
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 extension UserScreenController: AvatarImageDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -327,7 +241,7 @@ extension UserScreenController: AvatarImageDelegate, UIImagePickerControllerDele
         }
         
         imageAvatar = selectedImage
-        tblUser.reloadData()
+        tblUser1.reloadData()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -343,5 +257,14 @@ extension UserScreenController: AvatarImageDelegate, UIImagePickerControllerDele
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         self.present( alert, animated: true, completion: nil)
+    }
+}
+
+extension UIView {
+    func roundCorners(withRadius radius: CGFloat, at corners: UIRectCorner) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
     }
 }

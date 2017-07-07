@@ -57,6 +57,7 @@
 		1776F2121F01FE6D0012E9C8 /* RegisterLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1776F2111F01FE6D0012E9C8 /* RegisterLock.swift */; };
 		17888B121EEA7E21001B2863 /* CustomCellUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17888B111EEA7E21001B2863 /* CustomCellUser.xib */; };
 		17888B141EEA8416001B2863 /* CustomCellUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17888B131EEA8416001B2863 /* CustomCellUser.swift */; };
+		17CFD4551F0E2312004EA34D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17CFD4541F0E2312004EA34D /* CoreBluetooth.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		17D6D2551EF783AA00E2DB03 /* SlideInPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D6D2511EF783AA00E2DB03 /* SlideInPresentationController.swift */; };
 		17E8982E1EE5365D00CADC09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E8982D1EE5365D00CADC09 /* AppDelegate.swift */; };
 		17E898301EE5365D00CADC09 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E8982F1EE5365D00CADC09 /* ViewController.swift */; };
@@ -120,6 +121,7 @@
 		1776F2111F01FE6D0012E9C8 /* RegisterLock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterLock.swift; sourceTree = "<group>"; };
 		17888B111EEA7E21001B2863 /* CustomCellUser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCellUser.xib; sourceTree = "<group>"; };
 		17888B131EEA8416001B2863 /* CustomCellUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCellUser.swift; sourceTree = "<group>"; };
+		17CFD4541F0E2312004EA34D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		17D6D2511EF783AA00E2DB03 /* SlideInPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlideInPresentationController.swift; path = "../../../../Downloads/MedalCount Completed/MedalCount/Presentation/SlideInPresentationController.swift"; sourceTree = "<group>"; };
 		17E8982A1EE5365D00CADC09 /* CleverApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleverApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17E8982D1EE5365D00CADC09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17CFD4551F0E2312004EA34D /* CoreBluetooth.framework in Frameworks */,
 				CA980CE613DDB6B3AA449D2E /* Pods_CleverApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -281,6 +284,7 @@
 		2AE80422288AC6582E26BA72 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				17CFD4541F0E2312004EA34D /* CoreBluetooth.framework */,
 				382E60E1977F29E1BACD77F9 /* Pods_CleverApp.framework */,
 			);
 			name = Frameworks;

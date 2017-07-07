@@ -18,6 +18,7 @@ class DateTimeDialogController: UIViewController {
     @IBOutlet weak var lbDateTime: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBAction func btnSave(_ sender: UIButton) {
+        self.removeAnimate()
     }
     
     @IBAction func btnRefresh(_ sender: UIButton) {

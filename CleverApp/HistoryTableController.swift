@@ -25,6 +25,7 @@ class HistoryTableController: UIViewController {
 //            self.tblHistory.alpha = 1.0
 //            self.filterView.isHidden = false
 //        }, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnFilter(_ sender: UIButton) {
@@ -65,22 +66,24 @@ class HistoryTableController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tblHistory.alpha = 0.3
+//        self.tblHistory.alpha = 0.3
         self.filterView.isHidden = true
-        
-        self.dialogView.duration = 1.0
-        self.dialogView.animation = "slideLeft"
-        self.dialogView.curve = "easeIn"
-        self.dialogView.animate()
+        self.dialogView.isHidden = true
 //        self.dialogView.center.x += self.view.bounds.width
         
         self.navigationController?.navigationBar.barTintColor = UIColor.black
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-
-        timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(loadingProgress), userInfo: nil, repeats: true)
     }
     
-    override func viewDidAppear(_ animated: Bool) {}
+    override func viewDidAppear(_ animated: Bool) {
+        
+        self.dialogView.isHidden = false
+        self.dialogView.duration = 1.0
+        self.dialogView.animation = "slideLeft"
+        self.dialogView.curve = "easeIn"
+        self.dialogView.animate()
+        timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(loadingProgress), userInfo: nil, repeats: true)
+    }
     
     func animateTable() {
         tblHistory.reloadData()
@@ -91,7 +94,6 @@ class HistoryTableController: UIViewController {
             let cell: UITableViewCell = i
             cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
         }
-        
         var index: Double = 0
         for cellItem in cells {
             let cell: UITableViewCell = cellItem
@@ -134,7 +136,7 @@ class HistoryTableController: UIViewController {
     }
     
     func loadingProgress() {
-        
+        self.tblHistory.alpha = 0.3
         self.numberArr.append(self.counter)
         self.counter += 1
 //            OperationQueue.main.addOperation() {

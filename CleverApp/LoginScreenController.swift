@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Spring
 
 class LoginScreenController: UIViewController {
 
@@ -15,7 +16,32 @@ class LoginScreenController: UIViewController {
     @IBOutlet weak var txtPassword: CustomTextField!
     @IBOutlet weak var btnLogin: UIButton!
     @IBOutlet weak var btnCancel: UIButton!
-    @IBAction func btnChangePassTap(_ sender: UIButton) { }
+    @IBOutlet weak var iconChange: SpringImageView!
+    @IBOutlet weak var centerAlignUsername: NSLayoutConstraint!
+    @IBOutlet weak var centerAlignPassword: NSLayoutConstraint!
+    
+    var tap: Bool = false
+    
+    @IBAction func btnChangePassTap(_ sender: UIButton) {
+        tap = !tap
+        if(tap) {
+//            self.iconChange.startRotation(toValue: Double.pi, duration: 1.5, repeatCount: 0, clockwise: false)
+            UIView.animate(
+                withDuration: 0.7,
+                animations: {
+                    self.iconChange.transform = self.iconChange.transform.rotated(by: CGFloat(Double.pi/2))
+            },
+            completion: nil)
+            
+        } else {
+            UIView.animate(
+                withDuration: 0.7,
+                animations: {
+                    self.iconChange.transform = self.iconChange.transform.rotated(by: CGFloat(-Double.pi/2))
+            },
+            completion: nil)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,19 +54,30 @@ class LoginScreenController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+//        super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
         
 //        self.txtUsername.center.y -= self.view.bounds.width
 //        self.txtPassword.center.x -= self.view.bounds.width
-//        btnCancel.center.x - = self.view.bounds.width
+//        centerAlignUsername.constant -= view.bounds.width
+//        centerAlignPassword.constant -= view.bounds.width
         
         btnLogin.alpha = 0.0
         btnCancel.alpha = 0.0
     }
-    
+    // slideUp
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+//        
+//        UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
+//            self.centerAlignUsername.constant += self.view.bounds.width
+//            self.view.layoutIfNeeded()
+//        }, completion: nil)
+//        
+//        UIView.animate(withDuration: 3, delay: 0.7, options: .curveEaseOut, animations: {
+//            self.centerAlignPassword.constant += self.view.bounds.width
+//            self.view.layoutIfNeeded()
+//        }, completion: nil)
         
         UIView.animate(
             withDuration: 0.5,
@@ -67,14 +104,22 @@ class LoginScreenController: UIViewController {
         Login()
     }
     
-    @IBAction func btnCancelTap(_ sender: UIButton) { }
+    @IBAction func btnCancelTap(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     func Login() {
 //        guard let username = txtUsername.text, userName != "" else { return }
-        guard let passcode = txtPassword.text, passcode != "" else { return }
-        if (passcode == "123") {
+        let message = UserScreenController()
+        guard let passcode = txtPassword.text else { return }
+        
+        if(passcode == "") {
+            message.showMessage(content: "Vui lòng nhập mật khẩu!", theme: .error, duration: 0.8)
+        } else if (passcode == "123") {
             let panel = storyboard?.instantiateViewController(withIdentifier: "Panel") as! PanelController
             navigationController?.pushViewController(panel, animated: true)
+        } else {
+            message.showMessage(content: "Mật khẩu không chính xác!", theme: .error, duration: 0.8)
         }
     }
     

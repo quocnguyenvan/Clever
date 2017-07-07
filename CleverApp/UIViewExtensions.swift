@@ -60,4 +60,25 @@ extension UIView {
         animation.duration = duration
         self.layer.add(animation, forKey: kCATransitionFade)
     }
+    
+    func startRotation(toValue value: Double = Double.pi * 2, duration: CFTimeInterval = 1, repeatCount: Float = Float.infinity, clockwise: Bool = true) {
+        if self.layer.animation(forKey: "rotation") != nil { return }
+        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
+        let direction = clockwise ? 1.0 : -1.0 // hướng xoay
+        animation.toValue = value * direction
+        animation.duration = duration
+        animation.autoreverses = false // true: xoay hết vòng rồi xoay ngược lại
+        
+        animation.isCumulative = true
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = kCAFillModeBoth
+        animation.repeatCount = repeatCount
+        self.layer.add(animation, forKey:"rotation")
+    }
+    
+    func stopRotation() {
+        if self.layer.animation(forKey: "rotation") != nil {
+            self.layer.removeAnimation(forKey: "rotation")
+        }
+    }
 }

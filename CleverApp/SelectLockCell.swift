@@ -27,7 +27,6 @@ class SelectLockCell: UITableViewCell {
         }
     }
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }

@@ -26,12 +26,38 @@ class LockScreenController: UIViewController {
     @IBOutlet weak var viewAnimated2: LockAnimationView!
     @IBOutlet weak var viewAnimated3: LockAnimationView!
     
-    @IBOutlet weak var btnLockView: UIButton!
+    @IBAction func tapLockImage(_ sender: UITapGestureRecognizer) {
+        if let touchPoint = sender.location(in: self.imageLockView) as CGPoint! {
+            
+            /* Cong thuc tinh khi nguoi dung touch inside hinh tron */
+            let x = self.view.frame.origin.x
+            let y = self.view.frame.origin.y
+            let xTouch = touchPoint.x
+            let yTouch = touchPoint.y
+            let radius = self.imageLockView.frame.size.width / 2
+            
+            let tapAreaTotal = pow((xTouch - (x + radius)), 2) + pow((yTouch - (y + radius)), 2)
+            /* (xTouch - (x + radius)) * (xTouch - (x + radius)) + (yTouch - (y + radius)) * (yTouch - (y + radius)) */
+            
+            if  tapAreaTotal <= pow(radius, 2) {
+                print("You are tapping inside circle !! x: \(touchPoint.x); y: \(touchPoint.y)")
+                self.startLockControl()
+            }
+        }
+    }
+    
+    @IBOutlet weak var imageLockView: UIImageView!
+    @IBOutlet weak var btnLock: UIButton!
     @IBAction func btnLockTap(_ sender: UIButton) {
+        self.startLockControl()
+    }
+    
+    func startLockControl() {
         isStarted = !isStarted
         if (isStarted) {
             start()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
+                self.btnLock.isSelected = !self.btnLock.isSelected
                 self.stop()
                 self.isStarted = !self.isStarted
             }
@@ -41,10 +67,9 @@ class LockScreenController: UIViewController {
     }
     
     func start() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        viewAnimated1.tintColor = appDelegate.uiColorFromHex(rgbValue: 0xd1411d)
-        viewAnimated2.tintColor = appDelegate.uiColorFromHex(rgbValue: 0x7e4ae9)
-        viewAnimated3.tintColor = appDelegate.uiColorFromHex(rgbValue: 0x07b8e7)
+        viewAnimated1.tintColor = UIColor(hex: "#2decf2")
+        viewAnimated2.tintColor = UIColor(hex: "#32b3e5")
+        viewAnimated3.tintColor = UIColor(hex: "#07b8e7")
         
         viewAnimated1.startAnimate(duration: 0.6, lineWidth: 5.0)
         viewAnimated2.startAnimate(duration: 0.8, lineWidth: 6.5)
@@ -63,32 +88,55 @@ class LockScreenController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let btnLockSize = UIScreen.main.bounds.width * 0.7
-        cstWidthBtnLock.constant = btnLockSize
-        cstHeightBtnLock.constant = btnLockSize
+        
+        imageLockView.layer.cornerRadius = imageLockView.frame.size.width / 2
+        imageLockView.clipsToBounds = true
+        
+        btnLock.setBackgroundImage(UIImage(named: "Lock_Icon"), for: .normal)
+        btnLock.setBackgroundImage(UIImage(named: "Unlock_icon"), for: .selected)
+        
+//        let btnLockSize = UIScreen.main.bounds.width * 0.7
+//        cstWidthBtnLock.constant = btnLockSize
+//        cstHeightBtnLock.constant = btnLockSize
         // view 1
-        cstWidthView1.constant = cstWidthBtnLock.constant + 0.5
-        cstHeightView1.constant = cstHeightBtnLock.constant + 0.5
+//        cstWidthView1.constant = cstWidthBtnLock.constant + 0.5
+//        cstHeightView1.constant = cstHeightBtnLock.constant + 0.5
         // view 2
-        cstWidthView2.constant = cstWidthView1.constant + 0.5
-        cstHeightView2.constant = cstHeightView1.constant + 0.5
+//        cstWidthView2.constant = cstWidthView1.constant + 0.5
+//        cstHeightView2.constant = cstHeightView1.constant + 0.5
         // view 3
-        cstWidthView3.constant = cstWidthView2.constant + 0.5
-        cstHeightView3.constant = cstHeightView2.constant + 0.5
+//        cstWidthView3.constant = cstWidthView2.constant + 0.5
+//        cstHeightView3.constant = cstHeightView2.constant + 0.5
     }
     
     func animateButton() {
-        btnLockView.transform = CGAffineTransform(scaleX: 0.3, y: 0.1)
+        btnLock.transform = CGAffineTransform(scaleX: 0.3, y: 0.1)
         UIView.animate(
             withDuration: 0.5,
             delay: 0,
             usingSpringWithDamping: CGFloat(0.2),
             initialSpringVelocity: CGFloat(0.6),
             options: .allowUserInteraction,
-            animations: { self.btnLockView.transform = .identity },
+            animations: { self.btnLock.transform = .identity },
             completion: { finished in
                 self.animateButton()
             }
         )
     }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let radius:CGFloat = (self.btnLockView.bounds.size.width / 2)
+//        var point:CGPoint = CGPoint()
+//        
+//        if let touch = touches.first {
+//            point = touch.location(in: self.btnLockView)
+//            print("\(touch)")
+//        }
+//        
+//        let distance: CGFloat = sqrt(CGFloat(powf((Float(self.btnLockView.center.x - point.x)), 2) + powf((Float(self.btnLockView.center.y - point.y)), 2)))
+//        
+//        if (distance < radius) {
+//            super.touchesBegan(touches, with: event)
+//        }
+//    }
 }

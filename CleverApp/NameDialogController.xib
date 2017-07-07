@@ -15,6 +15,7 @@
             <connections>
                 <outlet property="dialogView" destination="YnU-BB-y4V" id="OzI-JO-r8g"/>
                 <outlet property="lblTime" destination="L4I-VP-o3k" id="1HZ-VH-eCk"/>
+                <outlet property="textFieldName" destination="S4Q-hL-LT1" id="IOh-dQ-P7J"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -73,8 +74,8 @@
                                 <action selector="btnClose:" destination="-1" eventType="touchUpInside" id="K9C-uO-wU0"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[15]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4I-VP-o3k">
-                            <rect key="frame" x="212" y="95" width="30" height="18"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[16]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4I-VP-o3k">
+                            <rect key="frame" x="212" y="93" width="30" height="18"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="30" id="ccC-ez-6Fn"/>
                             </constraints>
@@ -122,7 +123,7 @@
                 <constraint firstItem="OuA-An-cQw" firstAttribute="centerX" secondItem="YnU-BB-y4V" secondAttribute="centerX" id="1Xi-jX-oB9"/>
                 <constraint firstItem="YnU-BB-y4V" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="B3g-UC-4fd"/>
                 <constraint firstItem="OuA-An-cQw" firstAttribute="top" secondItem="S4Q-hL-LT1" secondAttribute="bottom" constant="15" id="Bb6-4R-0vj"/>
-                <constraint firstItem="OuA-An-cQw" firstAttribute="top" secondItem="L4I-VP-o3k" secondAttribute="bottom" constant="10" id="T49-G9-eEU"/>
+                <constraint firstItem="OuA-An-cQw" firstAttribute="top" secondItem="L4I-VP-o3k" secondAttribute="bottom" constant="12" id="T49-G9-eEU"/>
                 <constraint firstItem="YnU-BB-y4V" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="dyQ-zN-Sz8"/>
                 <constraint firstItem="OuA-An-cQw" firstAttribute="top" secondItem="YnU-BB-y4V" secondAttribute="bottom" constant="-36.5" id="h1s-1f-XIW"/>
                 <constraint firstItem="YnU-BB-y4V" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="2/3" id="kCY-qa-DQZ"/>

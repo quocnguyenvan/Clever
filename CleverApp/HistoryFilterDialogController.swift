@@ -18,6 +18,10 @@ class HistoryFilterDialogController: UIViewController {
         self.removeAnimate()
     }
     
+    @IBAction func btnSave(_ sender: UIButton) {
+        self.removeAnimate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

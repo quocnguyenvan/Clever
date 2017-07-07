@@ -82,7 +82,7 @@ extension SettingScreenController: UITableViewDataSource {
 
 extension SettingScreenController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        tableView.deselectRow(at: indexPath, animated: true)
         switch settingMenu[indexPath.row] {
             case "DATE & TIME":
                 showDateTimeDialog()

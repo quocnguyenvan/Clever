@@ -32,6 +32,7 @@ class PanelController: UIViewController {
         
         collectPanel.dataSource = self
         collectPanel.delegate = self
+        addViewController(childViewController: lockScreenController)
     }
     
     func backTap() {

@@ -42,6 +42,7 @@
                     <constraint firstItem="r9g-He-ggT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="je5-ln-PO5"/>
                 </constraints>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="lbDetailLock" destination="r9g-He-ggT" id="HSO-in-jRy"/>
                 <outlet property="lbInfoLock" destination="wGM-H2-KBS" id="Umt-K8-8Ny"/>
